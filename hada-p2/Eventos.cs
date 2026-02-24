@@ -4,29 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+
+namespace Hada
 {
-    // Información para el evento de tocar un barco
     public class TocadoArgs : EventArgs
     {
-        public string nombre {  get; set; }
-        public Coordenada coordenadaImpacto { get; set; }
+        public string nombre { get; }
+        public Coordenada coordenadaImpacto { get; }
 
-        public TocadoArgs(string nombre, Coordenada coordenadaImpacto) {
-        
-            this.nombre = nombre;
-            this.coordenadaImpacto = coordenadaImpacto;
+        public TocadoArgs(string nombre, Coordenada coordenadaImpacto)
+        {
+            this.nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            this.coordenadaImpacto = coordenadaImpacto ?? throw new ArgumentNullException(nameof(coordenadaImpacto));
         }
     }
 
-    // Información para el evento de hundir un barco
     public class HundidoArgs : EventArgs
     {
-        public string nombre { get; set; }
+        public string nombre { get; }
 
         public HundidoArgs(string nombre)
         {
-            this.nombre = nombre;
+            this.nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
         }
     }
 }
