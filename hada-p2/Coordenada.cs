@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace hada_p2
 {
-    internal class Coordenada
+    public class Coordenada
     {
         private int _fila;
         private int _columna;
