@@ -4,75 +4,89 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+
+namespace Hada
 {
     public class Barco
-    {   
-        //Propiedades
+    {
+        // Propiedades públicas (escritura privada donde toca)
         public Dictionary<Coordenada, string> CoordenadasBarco { get; private set; }
         public string Nombre { get; private set; }
         public int NumDanyos { get; private set; }
 
-        // Eventos
+        // Eventos públicos
         public event EventHandler<TocadoArgs> eventoTocado;
         public event EventHandler<HundidoArgs> eventoHundido;
 
         public Barco(string nombre, int longitud, char orientacion, Coordenada coordenadaInicio)
         {
+            if (string.IsNullOrWhiteSpace(nombre))
+                throw new ArgumentException("Nombre no puede ser vacío.", nameof(nombre));
+            if (longitud <= 0)
+                throw new ArgumentOutOfRangeException(nameof(longitud), "Longitud debe ser > 0.");
+            if (orientacion != 'h' && orientacion != 'v')
+                throw new ArgumentException("Orientación debe ser 'h' o 'v'.", nameof(orientacion));
+            if (coordenadaInicio == null)
+                throw new ArgumentNullException(nameof(coordenadaInicio));
+
             Nombre = nombre;
             NumDanyos = 0;
             CoordenadasBarco = new Dictionary<Coordenada, string>();
+
+            //Inicializa coordenadas según orientación y longitud
             
-            // Calcular coordenadas según orientacion 
-            for(int m = 0; m < longitud; m++)
+            for (int m = 0; m < longitud; m++)
             {
-                Coordenada nueva;
+                Coordenada nueva =
+                    (orientacion == 'h')
+                        ? new Coordenada(coordenadaInicio.Fila, coordenadaInicio.Columna + m)
+                        : new Coordenada(coordenadaInicio.Fila + m, coordenadaInicio.Columna);
 
-                if (orientacion == 'h')
-                    nueva = new Coordenada(coordenadaInicio.Fila, coordenadaInicio.Columna + m);
-                else 
-                    nueva = new Coordenada(coordenadaInicio.Fila + m , coordenadaInicio.Columna);
-
+                // Etiqueta inicial: nombre delbarco
                 CoordenadasBarco.Add(nueva, Nombre);
             }
         }
 
         public void Disparo(Coordenada c)
         {
-            if (CoordenadasBarco.ContainsKey(c)) {
+            if (c == null) return;
 
-                //Si ya estaba tocada ("_T"), no incrementa daños
-                if (!CoordenadasBarco[c].EndsWith("_T"))
-                {
-                    CoordenadasBarco[c] = Nombre + "_T"; // Acá actualizamos etiqueta :)
-                    NumDanyos++;
+            if (!CoordenadasBarco.ContainsKey(c))
+                return;
 
-                    // Lanzar evento Tocado
-                    if (eventoTocado != null)
-                        eventoTocado(this, new TocadoArgs(Nombre, c));
+            //Si ya estaba tocada, no incrementa daños ni relanza eventos
+          
+            if (CoordenadasBarco[c].EndsWith("_T"))
+                return;
 
-                    // Verififcar si se ha hundido 
-                    if (hundido() && eventoHundido != null)
-                        eventoHundido(this, new HundidoArgs(Nombre));
-                }
+            // Actualiza etiqueta y daños
+            CoordenadasBarco[c] = Nombre + "_T";
+            NumDanyos++;
+
+            // Lanza evento tocado
+            eventoTocado?.Invoke(this, new TocadoArgs(Nombre, c));
+
+            //Si queda hundido, lanza evento hundido
+
+            if (hundido())
+                eventoHundido?.Invoke(this, new HundidoArgs(Nombre));
         }
-    }
 
         public bool hundido()
         {
-            //Si todas las etiquetas tienen el sufijo _T, está hundido :(
+            //Hundido si todas las etiquetas terminan en _T :(
             return CoordenadasBarco.Values.All(v => v.EndsWith("_T"));
         }
 
         public override string ToString()
         {
-            string result = $"[{Nombre}] - DAÑOS: [{NumDanyos}] - HUNDIDO: [{hundido()}] - COORDENADAS: ";
-            foreach (var par in CoordenadasBarco)
-            {
-                result += $"[{par.Key} : {par.Value}] ";
+            var sb = new StringBuilder();
+            sb.Append($"[{Nombre}] - DAÑOS: [{NumDanyos}] - HUNDIDO: [{hundido()}] - COORDENADAS: ");
 
-            }
-            return result;
+            foreach (var par in CoordenadasBarco)
+                sb.Append($"[{par.Key}:{par.Value}] ");
+
+            return sb.ToString();
         }
     }
 }
