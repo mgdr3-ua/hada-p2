@@ -45,7 +45,31 @@ namespace hada_p2
             Columna = coordenada .Columna;
         }
 
-        // Sobrecargas de métodos de objetos 
+        // Sobrecargas de métodos de objeto
+
+        public override string ToString()
+        {
+            return "(" + Fila + " , " + Columna + ")";
+        }
+
+        public override int GetHashCode()
+        {
+            return Fila.GetHashCode() ^ Columna.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null || !(obj is Coordenada)) return false;
+            Coordenada c = (Coordenada)obj;
+
+            return Fila == c.Fila && Columna == c.Columna;
+        }
+
+        public bool Equals(Coordenada coordenada)
+        {
+            if(coordenada == null) return false;
+            return Fila == coordenada.Fila && Columna == coordenada.Columna;
+        }
 
     }
 
