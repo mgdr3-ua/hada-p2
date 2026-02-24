@@ -11,7 +11,7 @@ namespace Hada
         private int _fila;
         private int _columna;
 
-        // Propiedades públicas con campo de respaldo (0..9)
+        //    Propiedades públicas con campo de respaldo (0..9) tablero
         public int Fila
         {
             get => _fila;
@@ -26,6 +26,7 @@ namespace Hada
         public int Columna
         {
             get => _columna;
+           
             set
             {
                 if (value < 0 || value > 9)
@@ -35,8 +36,7 @@ namespace Hada
         }
 
         // 4 constructores requeridos
-        public Coordenada()
-        {
+        public Coordenada(){
             Fila = 0;
             Columna = 0;
         }
@@ -56,11 +56,12 @@ namespace Hada
         public Coordenada(Coordenada coordenada)
         {
             if (coordenada == null) throw new ArgumentNullException(nameof(coordenada));
+           
             Fila = coordenada.Fila;
             Columna = coordenada.Columna;
         }
 
-        // Métodos requeridos
+        //Métodos requeridos:
         public override string ToString() => $"({Fila},{Columna})";
 
         public override int GetHashCode() =>

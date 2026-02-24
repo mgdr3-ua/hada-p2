@@ -15,6 +15,7 @@ namespace Hada
         public TocadoArgs(string nombre, Coordenada coordenadaImpacto)
         {
             this.nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            
             this.coordenadaImpacto = coordenadaImpacto ?? throw new ArgumentNullException(nameof(coordenadaImpacto));
         }
     }
@@ -22,9 +23,7 @@ namespace Hada
     public class HundidoArgs : EventArgs
     {
         public string nombre { get; }
-
-        public HundidoArgs(string nombre)
-        {
+        public HundidoArgs(string nombre){
             this.nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
         }
     }
