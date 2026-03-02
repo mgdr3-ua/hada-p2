@@ -39,7 +39,7 @@ namespace Hada
             //bucle principal del juego
             while (!finPartida)
             {
-                Console.WriteLine("Introduce una coordenada (NUMERO, NUMERO) o 's' para salir: ");
+                Console.WriteLine("Introduce la coordenada a la que disparar FILA,COLUMNA ('S' para Salir): ");
                 string entrada = Console.ReadLine();
 
                 if (entrada == null)
@@ -67,6 +67,8 @@ namespace Hada
                 //ejecuta disparar
                 Coordenada c = new Coordenada(fila, columna);
                 tablero.Disparar(c);
+                
+                Console.WriteLine(tablero.ToString());
             }
 
         }

@@ -111,6 +111,9 @@ namespace Hada
         public string DibujarTablero()
         {
             string tablero = "";
+            tablero += Environment.NewLine;
+            tablero += "CASILLAS TABLERO" + Environment.NewLine;
+            tablero += "-----" + Environment.NewLine;
 
             for(int fila = 0; fila < TamTablero; fila++) 
             { 
@@ -136,13 +139,13 @@ namespace Hada
                 salida += b.ToString() + Environment.NewLine;
 
             //coordenadas disparadas
-            salida += "Coordenadas Disparadas: ";
+            salida += "Coordenadas disparadas: ";
             foreach (Coordenada cd in coordenadasDisparadas)
                 salida += cd.ToString() + " ";
             salida += Environment.NewLine;
 
             //coordenadas tocadas
-            salida += "Coordenadas Tocadas: ";
+            salida += "Coordenadas tocadas: ";
             foreach (Coordenada ct in coordenadasTocadas)
                 salida += ct.ToString() + " ";
             salida += Environment.NewLine;
