@@ -5,29 +5,70 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+namespace Hada
 {
-    internal class Tablero
-    {
-        //inicio
+
+   public class Tablero
+   {
+        
+        private int tamTablero;
+
+        //propiedad pública
+        public int TamTablero
+        {
+            get { return tamTablero; }
+            set 
+            {
+                if (value < 4 || value > 9)
+                    throw new ArgumentOutOfRangeException(nameof(TamTablero), "El tamaño mínimo del tablero es 4, y el máximo 9.");
+
+                tamTablero = value;
+            }
+
+        }
+
+        //propiedades privadas
+        private List<Coordenada> coordenadasDisparadas;
+        private List<Coordenada> coordenadasTocadas;
+        private List<Barco> barcos;
+        private List<Barco> barcosEliminados;
+        private Dictionary<Coordenada, string> casillasTablero;
+
+        //constructor
         public Tablero(int tamTablero, List<Barco> barcos)
         {
+            TamTablero = tamTablero;
+            this.barcos = barcos ?? throw new ArgumentNullException(nameof(barcos));
 
+            coordenadasDisparadas = new List<Coordenada>();
+            coordenadasTocadas = new List<Coordenada> (); 
+            barcosEliminados = new List<Barco> ();
+            casillasTablero = new Dictionary<Coordenada, string> ();
         }
 
-        public void Disparar(Coordenada c)
+        //metodo privado inicializarCasillasTablero()
+        private void inicializarCasillasTablero()
         {
+            casillasTablero.Clear ();
 
-        }
+            //todo a agua
+            for(int fila = 0; fila < TamTablero; fila++) 
+            {
+                for (int col = 0; col < TamTablero; col++) 
+                {
+                    casillasTablero.Add(new Coordenada(fila, col), "AGUA");
+                }
+            }
 
-        public string DibujarTablero()
-        {
-            return "";
-        }
-
-        public override string ToString()
-        {
-            return "";
+            //colocar barcos
+            foreach(Barco b in barcos)
+            {
+                foreach(var par in b.CoordenadasBarco) 
+                {
+                    if (casillasTablero.ContainsKey(par.Key))
+                        casillasTablero[par.Key] = b.Nombre; //estado nombre_barco
+                }
+            }
         }
     }
 }
