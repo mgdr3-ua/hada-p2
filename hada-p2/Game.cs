@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,13 +69,13 @@ namespace Hada
                 tablero.Disparar(c);
             }
 
-
         }
 
         //manejador del evento fin de partida
         private void cuandoEventoFinPartida(object sender, EventArgs e)
         {
-
+            Console.WriteLine("PARTIDA FINALIZADA!!");
+            finPartida = true;
         }
 
     }
