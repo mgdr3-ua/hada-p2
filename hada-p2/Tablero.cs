@@ -208,7 +208,6 @@ namespace Hada
             {
                 eventoFinPartida?.Invoke(this, EventArgs.Empty);
             }
-
         }
     }
 }
