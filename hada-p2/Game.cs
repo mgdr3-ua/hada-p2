@@ -49,6 +49,23 @@ namespace Hada
                     finPartida = true;
                     break;
                 }
+
+                //comprobamos formato NUMERO, NUMERO
+                string[] partes = entrada.Split(',');
+                if (partes.Length != 2)
+                    continue;
+
+                int fila;
+                int columna;
+                bool okFila = int.TryParse(partes[0].Trim(), out fila);
+                bool okCol = int.TryParse(partes[1].Trim(), out columna);
+
+                if (!okFila || !okCol)
+                    continue;
+
+                //ejecuta disparar
+                Coordenada c = new Coordenada(fila, columna);
+                tablero.Disparar(c);
             }
 
 
