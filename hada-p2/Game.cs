@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hada_p2
+namespace Hada
 {
-    internal class Game
+    public internal class Game
     {
+        //inicio
     }
 }
