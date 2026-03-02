@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Hada
 {
@@ -46,8 +47,8 @@ namespace Hada
             casillasTablero = new Dictionary<Coordenada, string> ();
         }
 
-        //metodo privado inicializarCasillasTablero()
-        private void inicializarCasillasTablero()
+        //metodo privado inicializaCasillasTablero()
+        private void inicializaCasillasTablero()
         {
             casillasTablero.Clear ();
 
@@ -69,6 +70,49 @@ namespace Hada
                         casillasTablero[par.Key] = b.Nombre; //estado nombre_barco
                 }
             }
+        }
+
+        private bool estaDentroTablero(Coordenada c)
+        {
+            return c != null &&
+                c.Fila >= 0 && c.Fila < TamTablero &&
+                c.Columna >= 0 && c.Columna < TamTablero;
+        }
+
+        //metodo publico
+        public void Disparar(Coordenada c)
+        {
+            if(!estaDentroTablero(c))
+            {
+                Console.WriteLine($"La coordenada {c} está fuera de las dimensiones del tablero.");
+                return;
+            }
+
+            //registrar disparos
+            coordenadasDisparadas.Add(new Coordenada(c));
+
+            //comprobar impacto en barcos
+            foreach (Barco b in barcos)
+                b.Disparo(c);
+        }
+
+        public string DibujarTablero()
+        {
+            string tablero = "";
+
+            for(int fila = 0; fila < TamTablero; fila++) 
+            { 
+                for(int col = 0; col < TamTablero; col++) 
+                {
+                    Coordenada coord = new Coordenada(fila, col);
+                    tablero += casillasTablero[coord] + "]";
+                }
+
+                tablero += Environment.NewLine;
+            }
+
+            return tablero;
+
         }
     }
 }
