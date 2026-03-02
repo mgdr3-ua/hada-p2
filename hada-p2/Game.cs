@@ -6,8 +6,59 @@ using System.Threading.Tasks;
 
 namespace Hada
 {
-    public internal class Game
+    public class Game
     {
-        //inicio
+        //propiedad privada
+        private bool finPartida;
+
+        public Game()
+        {
+            finPartida = false;
+            gameLoop();
+        }
+
+        //metodo privado
+        private void gameLoop()
+        {
+            //1. Inicializo barcos (minimo 3) - elegidos para no solapar
+            List<Barco> barcos = new List<Barco>();
+
+            //barco(nombre, longitud, orientacion, coordenadaInicio)
+            barcos.Add(new Barco("BARCO1", 3, 'h', new Coordenada(0, 0))); //(0,0) (0,1) (0,2)
+            barcos.Add(new Barco("BARCO2", 4, 'v', new Coordenada(2, 5))); //(2,5) (3,5) (4,5) (5,5)
+            barcos.Add(new Barco("BARCO3", 2, 'h', new Coordenada(7, 2))); //(7,2) (7,3)
+
+            //2. Inicializo tablero
+            int tamTablero = 9;
+            Tablero tablero = new Tablero(tamTablero, barcos);
+
+            //3. Evento fin de partida del tablero
+            tablero.eventoFinPartida += cuandoEventoFinPartida;
+
+            //bucle principal del juego
+            while (!finPartida)
+            {
+                Console.WriteLine("Introduce una coordenada (NUMERO, NUMERO) o 's' para salir: ");
+                string entrada = Console.ReadLine();
+
+                if (entrada == null)
+                    continue;
+
+                if(entrada.Equals("s", StringComparison.OrdinalIgnoreCase))
+                {
+                    finPartida = true;
+                    break;
+                }
+            }
+
+
+        }
+
+        //manejador del evento fin de partida
+        private void cuandoEventoFinPartida(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
