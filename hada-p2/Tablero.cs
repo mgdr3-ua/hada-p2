@@ -114,5 +114,31 @@ namespace Hada
             return tablero;
 
         }
+
+        public override string ToString()
+        {
+            string salida = "";
+
+            //informacion de los barcos
+            foreach (Barco b in barcos)
+                salida += b.ToString() + Environment.NewLine;
+
+            //coordenadas disparadas
+            salida += "Coordenadas Disparadas: ";
+            foreach (Coordenada cd in coordenadasDisparadas)
+                salida += cd.ToString() + " ";
+            salida += Environment.NewLine;
+
+            //coordenadas tocadas
+            salida += "Coordenadas Tocadas: ";
+            foreach (Coordenada ct in coordenadasTocadas)
+                salida += ct.ToString() + " ";
+            salida += Environment.NewLine;
+
+            //tablero
+            salida += DibujarTablero();
+
+            return salida;
+        }
     }
 }
