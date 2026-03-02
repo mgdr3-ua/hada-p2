@@ -35,6 +35,8 @@ namespace Hada
         private List<Barco> barcosEliminados;
         private Dictionary<Coordenada, string> casillasTablero;
 
+        //evento público
+        public event EventHandler<EventArgs> eventoFinPartida;
         //constructor
         public Tablero(int tamTablero, List<Barco> barcos)
         {
@@ -45,6 +47,16 @@ namespace Hada
             coordenadasTocadas = new List<Coordenada> (); 
             barcosEliminados = new List<Barco> ();
             casillasTablero = new Dictionary<Coordenada, string> ();
+
+            //unir eventos tocado/hundido de cada barco
+            foreach (Barco b in this.barcos)
+            {
+                b.eventoTocado += cuandoEventoTocado;
+                b.eventoHundido += cuandoEventoHundido;
+            }
+
+            //inicializar tablero
+            inicializaCasillasTablero();
         }
 
         //metodo privado inicializaCasillasTablero()
@@ -61,7 +73,7 @@ namespace Hada
                 }
             }
 
-            //colocar barcos
+            //colocar barcos (nombre_barcos)
             foreach(Barco b in barcos)
             {
                 foreach(var par in b.CoordenadasBarco) 
@@ -139,6 +151,64 @@ namespace Hada
             salida += DibujarTablero();
 
             return salida;
+        }
+
+        //MANJEADORES (privados)
+        
+        //maneja el evento tocado
+        private void cuandoEventoTocado(object sender, TocadoArgs e)
+        {
+            //actualiza la casilla tocada en el tablero
+            if (estaDentroTablero(e.coordenadaImpacto) && casillasTablero.ContainsKey(e.coordenadaImpacto))
+            {
+                casillasTablero[e.coordenadaImpacto] = e.nombre + "_T";
+            }
+
+            //registrar coordenada tocada sin repetidos
+            bool existe = false;
+            foreach (Coordenada ct in coordenadasTocadas)
+            {
+                if (ct.Equals(e.coordenadaImpacto))
+                {
+                    existe = true;
+                    break;
+                }
+            }
+
+            if (!existe)
+                coordenadasTocadas.Add(new Coordenada(e.coordenadaImpacto));
+
+            //mensaje pedido
+            Console.WriteLine($"TABLERO: Barco [{e.nombre}] tocado en Coordenada: [{e.coordenadaImpacto}]");
+
+        }
+
+        //maneja el evento hundido
+        private void cuandoEventoHundido(object snder, HundidoArgs e)
+        {
+            //mensaje pedido
+            Console.WriteLine($"TABLERO: Barco [{e.nombre}] hundido !!");
+
+            //marcar barco como eliminado sin repetidos
+            Barco barcoHundido = null;
+            foreach (Barco b in barcos)
+            {
+                if (b.Nombre == e.nombre)
+                {
+                    barcoHundido = b;
+                    break;
+                }
+            }
+
+            if (barcoHundido != null && !barcosEliminados.Contains(barcoHundido))
+                barcosEliminados.Add(barcoHundido);
+
+            //si todos hundidos -> lanzar evento fin de partida 
+            if (barcosEliminados.Count == barcos.Count)
+            {
+                eventoFinPartida?.Invoke(this, EventArgs.Empty);
+            }
+
         }
     }
 }
