@@ -8,5 +8,6 @@ namespace hada_p2
 {
     internal class Tablero
     {
+        //inicio
     }
 }
