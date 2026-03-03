@@ -206,7 +206,7 @@ namespace Hada
             if (barcoHundido != null && !barcosEliminados.Contains(barcoHundido))
                 barcosEliminados.Add(barcoHundido);
 
-            //si todos hundidos -> lanzar evento fin de partida 
+            //si todos hundidos -> lanzar evento fin de partida  
             if (barcosEliminados.Count == barcos.Count)
             {
                 eventoFinPartida?.Invoke(this, EventArgs.Empty);
