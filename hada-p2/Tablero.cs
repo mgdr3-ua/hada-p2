@@ -69,7 +69,7 @@ namespace Hada
             {
                 for (int col = 0; col < TamTablero; col++) 
                 {
-                    casillasTablero.Add(new Coordenada(fila, col), "AGUA");
+                    casillasTablero.Add(new Coordenada(fila, col), "[AGUA");
                 }
             }
 

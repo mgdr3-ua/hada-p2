@@ -25,9 +25,9 @@ namespace Hada
             List<Barco> barcos = new List<Barco>();
 
             //barco(nombre, longitud, orientacion, coordenadaInicio)
-            barcos.Add(new Barco("BARCO1", 3, 'h', new Coordenada(0, 0))); //(0,0) (0,1) (0,2)
-            barcos.Add(new Barco("BARCO2", 4, 'v', new Coordenada(2, 5))); //(2,5) (3,5) (4,5) (5,5)
-            barcos.Add(new Barco("BARCO3", 2, 'h', new Coordenada(7, 2))); //(7,2) (7,3)
+            barcos.Add(new Barco("[BARCO1", 3, 'h', new Coordenada(0, 0))); //(0,0) (0,1) (0,2)
+            barcos.Add(new Barco("[BARCO2", 4, 'v', new Coordenada(2, 5))); //(2,5) (3,5) (4,5) (5,5)
+            barcos.Add(new Barco("[BARCO3", 2, 'h', new Coordenada(7, 2))); //(7,2) (7,3)
 
             //2. Inicializo tablero
             int tamTablero = 9;
